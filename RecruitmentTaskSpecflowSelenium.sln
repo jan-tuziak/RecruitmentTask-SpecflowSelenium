@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecruitmentTaskSpecflowSelenium", "RecruitmentTaskSpecflowSelenium.csproj", "{31A4CCE6-3299-4E11-8159-10786221AD9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31A4CCE6-3299-4E11-8159-10786221AD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A4CCE6-3299-4E11-8159-10786221AD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A4CCE6-3299-4E11-8159-10786221AD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A4CCE6-3299-4E11-8159-10786221AD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0D816D7-E96B-47F5-A29B-BB9B8F64AF3D}
+	EndGlobalSection
+EndGlobal
