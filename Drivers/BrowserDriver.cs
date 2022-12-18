@@ -34,7 +34,10 @@ namespace RecruitmentTaskSpecflowSelenium.Drivers
             var chromeOptions = new ChromeOptions();
 
             var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
-
+            
+            //Set implicit wait to 15 seconds
+            chromeDriver.Manage().Timeouts().ImplicitWait = new TimeSpan(0,0,15);
+            
             return chromeDriver;
         }
 

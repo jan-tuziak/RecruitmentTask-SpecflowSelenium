@@ -10,11 +10,15 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
     {
         private readonly LoginPageObject _loginPageObject;
         private readonly HomePageObject _homePageObject;
+        private readonly ContactsPageObject _contactsPageObject;
+        private readonly ContactsCreateRecordPageObject _contactsCreateRecordPageObject;
 
         public OneCrmCloudStepDefinitions(BrowserDriver browserDriver)
         {
             _loginPageObject = new LoginPageObject(browserDriver.Current);
             _homePageObject = new HomePageObject(browserDriver.Current);
+            _contactsPageObject =  new ContactsPageObject(browserDriver.Current);
+            _contactsCreateRecordPageObject = new ContactsCreateRecordPageObject(browserDriver.Current);
         }
 
         [Then(@"I logout")]
@@ -37,13 +41,13 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         }
 
         [When(@"I create a new contact '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
-        public void WhenICreateANewContact(string firstName, string lastname, string role, string category1, string category2)
+        public void WhenICreateANewContact(string firstName, string lastName, string role, string category1, string category2)
         {
-            throw new PendingStepException();
+            _contactsCreateRecordPageObject.CreateNewContact(firstName, lastName, role, category1, category2);
         }
 
         [Then(@"The new contact is '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
-        public void ThenTheNewContactIs(string firstName, string lastname, string role, string category1, string category2)
+        public void ThenTheNewContactIs(string firstName, string lastName, string role, string category1, string category2)
         {
             throw new PendingStepException();
         }
@@ -51,7 +55,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         [Given(@"I click create new contact")]
         public void GivenIClickCreateNewContact()
         {
-            throw new PendingStepException();
+            _contactsPageObject.CreateContact();
         }
 
     }

@@ -133,9 +133,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.When("I create a new contact \'Jan\' \'Kamykowski\' \'Admin\' \'Customers\' \'Suppliers\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 15
- testRunner.Then("The new contact is \'Jan\' \'Kamykowski\' \'Admin\' \'Customers\' \'Suppliers\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

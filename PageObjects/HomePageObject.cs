@@ -10,7 +10,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 {
     internal class HomePageObject
     {
-        //The URL of the login page to be opened in the browser
+        //The URL of the home page to be opened in the browser
         private const string LoginUrl = "https://demo.1crmcloud.com/";
 
         //The Selenium web driver to automate the browser
@@ -25,7 +25,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         }
 
         //Finding elements by ID
-        private IWebElement HamburgerMenu => _webDriver.FindElement(By.CssSelector("label.meta-options-dropdown-button"));
+        public IWebElement HamburgerMenu => _webDriver.FindElement(By.CssSelector("label.meta-options-dropdown-button"));
         private IWebElement LogoutLink => _webDriver.FindElement(By.CssSelector("div.meta-options-dropdown>a:first-child"));
         private IWebElement TabSalesAndMarketing => _webDriver.FindElement(By.Id("grouptab-1"));
         private IWebElement LinkContacts => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(4)>div:nth-child(3)>a.menu-tab-sub-list"));

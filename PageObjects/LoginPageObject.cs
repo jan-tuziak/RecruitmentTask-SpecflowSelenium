@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
 namespace RecruitmentTaskSpecflowSelenium.PageObjects
 {
@@ -17,7 +18,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private readonly IWebDriver _webDriver;
 
         //The default wait time in seconds for wait.Until
-        public const int DefaultWaitInSeconds = 5;
+        public const int DefaultWaitInSeconds = 10;
 
         public LoginPageObject(IWebDriver webDriver)
         {
@@ -84,41 +85,17 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
                 _webDriver.Url = LoginUrl;
             }
 
-            if(!this.Login.Enabled || !this.Login.Displayed) //Check if login field exists
+            try  
+            //Check if login field exists
+            {
+                var temp = this.Login.Enabled || this.Login.Displayed;
+            }
+            catch(Exception ex)
             //If not logout
             {
                 HomePageObject homePageObject = new HomePageObject(_webDriver);
                 homePageObject.Logout();
             }
         }
-
-        //public string WaitForEmptyResult()
-        //{
-        //    //Wait for the result to be empty
-        //    return WaitUntil(
-        //        () => ResultElement.GetAttribute("value"),
-        //        result => result == string.Empty);
-        //}
-
-        ///// <summary>
-        ///// Helper method to wait until the expected result is available on the UI
-        ///// </summary>
-        ///// <typeparam name="T">The type of result to retrieve</typeparam>
-        ///// <param name="getResult">The function to poll the result from the UI</param>
-        ///// <param name="isResultAccepted">The function to decide if the polled result is accepted</param>
-        ///// <returns>An accepted result returned from the UI. If the UI does not return an accepted result within the timeout an exception is thrown.</returns>
-        //private T WaitUntil<T>(Func<T> getResult, Func<T, bool> isResultAccepted) where T : class
-        //{
-        //    var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-        //    return wait.Until(driver =>
-        //    {
-        //        var result = getResult();
-        //        if (!isResultAccepted(result))
-        //            return default;
-
-        //        return result;
-        //    });
-
-        //}
     }
 }

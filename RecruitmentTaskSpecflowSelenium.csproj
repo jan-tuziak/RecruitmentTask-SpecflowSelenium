@@ -28,4 +28,8 @@
     </Compile>
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="taskkill /f /im chromedriver.exe" ContinueOnError="true" />
+  </Target>
+
 </Project>
