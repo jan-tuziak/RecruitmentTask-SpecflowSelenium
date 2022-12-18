@@ -127,6 +127,15 @@ this.ScenarioInitialize(scenarioInfo);
 #line 12
  testRunner.And("I navigate to \'Contacts under Sales & Marketing\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 13
+ testRunner.And("I click create new contact", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 14
+ testRunner.When("I create a new contact \'Jan\' \'Kamykowski\' \'Admin\' \'Customers\' \'Suppliers\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 15
+ testRunner.Then("The new contact is \'Jan\' \'Kamykowski\' \'Admin\' \'Customers\' \'Suppliers\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

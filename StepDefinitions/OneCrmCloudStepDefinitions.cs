@@ -23,18 +23,6 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
             _homePageObject.Logout();
         }
 
-        [When(@"I click save contact")]
-        public void WhenIClickSaveContact()
-        {
-            throw new PendingStepException();
-        }
-
-        [Given(@"I create a new contact")]
-        public void GivenICreateANewContact()
-        {
-            throw new PendingStepException();
-        }
-
         [Given(@"I login")]
         public void GivenILogin()
         {
@@ -48,50 +36,20 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
             _homePageObject.NavigateTo(tabName);
         }
 
-        [Given(@"The first name is '([^']*)'")]
-        public void GivenTheFirstNameIs(string firstName)
+        [When(@"I create a new contact '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
+        public void WhenICreateANewContact(string firstName, string lastname, string role, string category1, string category2)
         {
             throw new PendingStepException();
         }
 
-        [Given(@"I enter last name '([^']*)'")]
-        public void GivenIEnterLastName(string lastName)
+        [Then(@"The new contact is '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
+        public void ThenTheNewContactIs(string firstName, string lastname, string role, string category1, string category2)
         {
             throw new PendingStepException();
         }
 
-        [Given(@"I assign role '([^']*)'")]
-        public void GivenIAssignRole(string role)
-        {
-            throw new PendingStepException();
-        }
-
-        [Given(@"I enter category '([^']*)'")]
-        public void GivenIEnterCategory(string category)
-        {
-            throw new PendingStepException();
-        }
-
-        [Then(@"The new contact first name is '([^']*)'")]
-        public void ThenTheNewContactFirstNameIs(string firstName)
-        {
-            throw new PendingStepException();
-        }
-
-        [Then(@"The new contact last name is '([^']*)'")]
-        public void ThenTheNewContactLastNameIs(string lastName)
-        {
-            throw new PendingStepException();
-        }
-
-        [Then(@"The new contact role '([^']*)'")]
-        public void ThenTheNewContactRole(string role)
-        {
-            throw new PendingStepException();
-        }
-
-        [Then(@"The new contact category is '([^']*)'")]
-        public void ThenTheNewContactCategoryIs(string category)
+        [Given(@"I click create new contact")]
+        public void GivenIClickCreateNewContact()
         {
             throw new PendingStepException();
         }
