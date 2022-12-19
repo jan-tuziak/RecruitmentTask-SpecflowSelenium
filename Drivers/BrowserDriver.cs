@@ -37,7 +37,10 @@ namespace RecruitmentTaskSpecflowSelenium.Drivers
             
             //Set implicit wait to 15 seconds
             chromeDriver.Manage().Timeouts().ImplicitWait = new TimeSpan(0,0,15);
-            
+
+            //Set 10 seconds for page loading
+            chromeDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+
             return chromeDriver;
         }
 

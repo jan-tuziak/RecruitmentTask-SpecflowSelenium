@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +21,12 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 5;
 
+        WebDriverWait wait;
+
         public HomePageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
+            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
         //Finding elements by ID
@@ -29,6 +34,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private IWebElement LogoutLink => _webDriver.FindElement(By.CssSelector("div.meta-options-dropdown>a:first-child"));
         private IWebElement TabSalesAndMarketing => _webDriver.FindElement(By.Id("grouptab-1"));
         private IWebElement LinkContacts => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(4)>div:nth-child(3)>a.menu-tab-sub-list"));
+        private IWebElement TabReportsAndSettings => _webDriver.FindElement(By.Id("grouptab-5"));
+        private IWebElement LinkReports => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:first-child>a.menu-tab-sub-list"));
+
 
 
         public void Logout()
@@ -80,6 +88,10 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
                     tab = TabSalesAndMarketing;
                     link = LinkContacts;
                     break;
+                case "Reports under Reports & Settings":
+                    tab = TabReportsAndSettings;
+                    link = LinkReports;
+                    break;
                 default: throw new ArgumentException("Invalid Tab and Link name");
             }
 
@@ -89,6 +101,13 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
             //Click the link
             link.Click();
+
+            ////wait for the page to load
+            //try
+            //{
+            //    wait.Until(ExpectedConditions.StalenessOf(link));
+            //}
+            //catch (NoSuchElementException) { }
         }
     }
 }

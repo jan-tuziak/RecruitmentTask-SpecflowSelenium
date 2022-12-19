@@ -13,6 +13,8 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         private readonly ContactsPageObject _contactsPageObject;
         private readonly ContactsCreateRecordPageObject _contactsCreateRecordPageObject;
         private readonly ContactsDetailPageObject _contactsDetailPageObject;
+        private readonly ReportsPageObject _reportPageObject;
+        private readonly ReportProjectProfitabilityPageObject _reportProjectProfitabilityPageObject;
 
         public OneCrmCloudStepDefinitions(BrowserDriver browserDriver)
         {
@@ -21,6 +23,8 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
             _contactsPageObject =  new ContactsPageObject(browserDriver.Current);
             _contactsCreateRecordPageObject = new ContactsCreateRecordPageObject(browserDriver.Current);
             _contactsDetailPageObject = new ContactsDetailPageObject(browserDriver.Current);
+            _reportPageObject = new ReportsPageObject(browserDriver.Current);
+            _reportProjectProfitabilityPageObject = new ReportProjectProfitabilityPageObject(browserDriver.Current);
         }
 
         [Then(@"I logout")]
@@ -58,6 +62,37 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         public void GivenIClickCreateNewContact()
         {
             _contactsPageObject.CreateContact();
+        }
+
+        [Given(@"I pick report '([^']*)'")]
+        public void GivenIPickReport(string reportName)
+        {
+            _reportPageObject.GoToReport(reportName);
+        }
+
+        [When(@"I run the report '([^']*)'")]
+        public void WhenIRunTheReport(string reportName)
+        {
+            switch (reportName)
+            {
+                case "Project Profitability":
+                    _reportProjectProfitabilityPageObject.CheckIfCorrectPageIsShown();
+                    _reportProjectProfitabilityPageObject.RunReport();
+                    break;
+                default: throw new ArgumentException($"Report '{reportName}' is invalid.");
+            }
+        }
+
+        [Then(@"I get some results for '([^']*)'")]
+        public void ThenIGetSomeResultsFor(string reportName)
+        {
+            switch (reportName)
+            {
+                case "Project Profitability":
+                    _reportProjectProfitabilityPageObject.CheckIfResultsAreShown();
+                    break;
+                default: throw new ArgumentException($"Report '{reportName}' is invalid.");
+            }
         }
 
     }
