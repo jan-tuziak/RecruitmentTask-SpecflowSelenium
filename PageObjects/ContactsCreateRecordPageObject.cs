@@ -27,15 +27,17 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
             webDriverWait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
-        //Finding elements by ID
+        //Finding elements by ID and Css
         private IWebElement FirstNameInput => _webDriver.FindElement(By.Id("DetailFormfirst_name-input"));
         private IWebElement LastNameInput => _webDriver.FindElement(By.Id("DetailFormlast_name-input"));
         private IWebElement BusinessRoleInput => _webDriver.FindElement(By.Id("DetailFormbusiness_role-input"));
         private IWebElement BusinessRoleAdmin => _webDriver.FindElement(By.CssSelector("div#DetailFormbusiness_role-input-popup>div:first-child>div:nth-child(6)"));
         private IWebElement CategoryInput => _webDriver.FindElement(By.Id("DetailFormcategories-input"));
         private IWebElement CategorySearchList => _webDriver.FindElement(By.CssSelector("div#DetailFormcategories-input-search-text>input.input-text"));
-        //private IWebElement CategoryCustomers => _webDriver.FindElement(By.XPath("//div[@class='option-cell input-label ' and text()='Customers']"));
-        //private IWebElement CategorySuppliers => _webDriver.FindElement(By.XPath("//div[@class='option-cell input-label ' and text()='Suppliers']"));
+        private IWebElement SaveContactButton => _webDriver.FindElement(By.Id("DetailForm_save-label"));
+        private IWebElement ContactDuplicateMessage => _webDriver.FindElement(By.CssSelector("form#Save>table>tbody>tr>td"));
+        private IWebElement ContactDuplicateSaveButton=> _webDriver.FindElement(By.Name("SubPanel_save"));
+
         private void EnterFirstName(string firstName)
         {
             //Clear text box
@@ -54,6 +56,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         private void ChooseBusinessRole(string businessRole)
         {
+            //TODO: Find a way to remove these Sleeps. Without them Selenium does not choose the Busniess Role
             Thread.Sleep(1000);
             BusinessRoleInput.Click();
             Thread.Sleep(1000);
@@ -62,26 +65,27 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         internal void CreateNewContact(string firstName, string lastName, string role, string category1, string category2)
         {
-            Thread.Sleep(300);
             EnterFirstName(firstName);
-            Thread.Sleep(300);
             EnterLastName(lastName);
-            Thread.Sleep(300);
             ChooseBusinessRole(role);
-            Thread.Sleep(300);
             AddCategory(category1);
-            Thread.Sleep(300);
             AddCategory(category2);
-            Thread.Sleep(300);
+            SaveContactButton.Click();
+            Thread.Sleep(2000);
+            try
+            {
+                if (ContactDuplicateMessage.Text.Contains("This contact may be a duplicate of an existing contact. You may either click on Save to continue creating this new contact with the previously entered data or you may click Cancel."))
+                    ContactDuplicateSaveButton.Click();
+            }
+            catch { }
+
         }
 
         private void AddCategory(string category)
         {
             CategoryInput.Click();
-            Thread.Sleep(500);
             CategorySearchList.Click();
             CategorySearchList.SendKeys(category);
-            Thread.Sleep(500);
             CategorySearchList.SendKeys(Keys.Enter);
         }
     }

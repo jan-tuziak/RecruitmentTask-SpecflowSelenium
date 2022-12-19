@@ -12,6 +12,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         private readonly HomePageObject _homePageObject;
         private readonly ContactsPageObject _contactsPageObject;
         private readonly ContactsCreateRecordPageObject _contactsCreateRecordPageObject;
+        private readonly ContactsDetailPageObject _contactsDetailPageObject;
 
         public OneCrmCloudStepDefinitions(BrowserDriver browserDriver)
         {
@@ -19,6 +20,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
             _homePageObject = new HomePageObject(browserDriver.Current);
             _contactsPageObject =  new ContactsPageObject(browserDriver.Current);
             _contactsCreateRecordPageObject = new ContactsCreateRecordPageObject(browserDriver.Current);
+            _contactsDetailPageObject = new ContactsDetailPageObject(browserDriver.Current);
         }
 
         [Then(@"I logout")]
@@ -49,7 +51,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         [Then(@"The new contact is '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
         public void ThenTheNewContactIs(string firstName, string lastName, string role, string category1, string category2)
         {
-            throw new PendingStepException();
+            _contactsDetailPageObject.CheckNewContact(firstName, lastName, role, category1, category2);
         }
 
         [Given(@"I click create new contact")]
