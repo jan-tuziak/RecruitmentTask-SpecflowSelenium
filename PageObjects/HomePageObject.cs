@@ -36,6 +36,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private IWebElement LinkContacts => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(4)>div:nth-child(3)>a.menu-tab-sub-list"));
         private IWebElement TabReportsAndSettings => _webDriver.FindElement(By.Id("grouptab-5"));
         private IWebElement LinkReports => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:first-child>a.menu-tab-sub-list"));
+        private IWebElement LinkActivityLog => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:nth-child(3)>a.menu-tab-sub-list"));
 
 
 
@@ -92,7 +93,11 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
                     tab = TabReportsAndSettings;
                     link = LinkReports;
                     break;
-                default: throw new ArgumentException("Invalid Tab and Link name");
+                case "Activity Log under Reports & Settings":
+                    tab = TabReportsAndSettings;
+                    link = LinkActivityLog;
+                    break;
+                default: throw new ArgumentException("Invalid Tab and/or Link name");
             }
 
             //Hover over the Tab
@@ -101,6 +106,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
             //Click the link
             link.Click();
+            Thread.Sleep(1000);
 
             ////wait for the page to load
             //try

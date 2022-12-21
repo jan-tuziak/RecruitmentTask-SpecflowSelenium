@@ -15,6 +15,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
         private readonly ContactsDetailPageObject _contactsDetailPageObject;
         private readonly ReportsPageObject _reportPageObject;
         private readonly ReportProjectProfitabilityPageObject _reportProjectProfitabilityPageObject;
+        private readonly ActivityLogPageObject _activityLogPageObject;
 
         public OneCrmCloudStepDefinitions(BrowserDriver browserDriver)
         {
@@ -25,6 +26,7 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
             _contactsDetailPageObject = new ContactsDetailPageObject(browserDriver.Current);
             _reportPageObject = new ReportsPageObject(browserDriver.Current);
             _reportProjectProfitabilityPageObject = new ReportProjectProfitabilityPageObject(browserDriver.Current);
+            _activityLogPageObject = new ActivityLogPageObject(browserDriver.Current);
         }
 
         [Then(@"I logout")]
@@ -93,6 +95,24 @@ namespace RecruitmentTaskSpecflowSelenium.StepDefinitions
                     break;
                 default: throw new ArgumentException($"Report '{reportName}' is invalid.");
             }
+        }
+
+        [Given(@"I select first '([^']*)' items in the table")]
+        public void GivenISelectFirstItemsInTheTable(string numberOfActivities)
+        {
+            _activityLogPageObject.SelectFirstItemsInTheTable(int.Parse(numberOfActivities));
+        }
+
+        [When(@"I delete selected items")]
+        public void WhenIDeleteSelectedItems()
+        {
+            _activityLogPageObject.DeleteSelectedItems();
+        }
+
+        [Then(@"The selected items were deleted")]
+        public void ThenTheSelectedItemsWereDeleted()
+        {
+            _activityLogPageObject.CheckIfItemsWereDeleted();
         }
 
     }

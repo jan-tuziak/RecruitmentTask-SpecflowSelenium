@@ -46,7 +46,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
             FilterTextInput.SendKeys(reportName);
             Thread.Sleep(250);
             FilterTextInput.SendKeys(Keys.Enter);
-            Thread.Sleep(250);
+            Thread.Sleep(1000);
             try
             {
                 FirstResultLink.Click();
