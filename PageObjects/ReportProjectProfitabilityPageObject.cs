@@ -11,7 +11,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     internal class ReportProjectProfitabilityPageObject
     {
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
@@ -21,9 +21,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public ReportProjectProfitabilityPageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-            ce = new CommonElements(_webDriver);
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            ce = new CommonElements(driver);
         }
         //Finding elements by ID and Css
         private By RunReportButton => By.Name("FilterForm_applyButton");
@@ -34,13 +34,13 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         {
             ce.WaitForStatusToDisappear();
             wait.Until(driver => CommonElements.Appears(driver, ReportName));
-            _webDriver.FindElement(ReportName).Text.Trim().Should().Be("Project Profitability");
+            driver.FindElement(ReportName).Text.Trim().Should().Be("Project Profitability");
         }
 
         internal void RunReport()
         {
             wait.Until(driver => CommonElements.Appears(driver, RunReportButton));
-            _webDriver.FindElement(RunReportButton).Click();
+            driver.FindElement(RunReportButton).Click();
             ce.WaitForStatusToDisappear();
         }
 
@@ -49,7 +49,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
             bool dataExists;
             try
             {
-                dataExists = _webDriver.FindElement(SampleDataPointLocator) != null;
+                dataExists = driver.FindElement(SampleDataPointLocator) != null;
             }
             catch (Exception)
             {

@@ -11,7 +11,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     internal class ContactsDetailPageObject
     {
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
@@ -20,8 +20,8 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public ContactsDetailPageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
         //Finding elements by ID and Css
@@ -32,9 +32,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         internal void CheckNewContact(string firstName, string lastName, string role, string category1, string category2)
         {
             wait.Until(driver => CommonElements.Appears(driver, FullNameHeader));
-            string actualFullName = _webDriver.FindElement(FullNameHeader).Text;
-            string actualBusinessRole = _webDriver.FindElement(BusinessRoleHeader).Text;
-            string actualCategories = _webDriver.FindElement(CategoriesList).Text;
+            string actualFullName = driver.FindElement(FullNameHeader).Text;
+            string actualBusinessRole = driver.FindElement(BusinessRoleHeader).Text;
+            string actualCategories = driver.FindElement(CategoriesList).Text;
 
             actualFullName.Should().Contain($"{firstName} {lastName}");
             actualBusinessRole.Should().Be(role);

@@ -16,7 +16,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private const string LoginUrl = "https://demo.1crmcloud.com/";
 
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 5;
@@ -25,8 +25,8 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public HomePageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
         //Finding elements by ID
@@ -41,19 +41,19 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         public void Logout()
         {
             this.GoTo();
-            _webDriver.FindElement(HamburgerMenu).Click();
-            _webDriver.FindElement(LogoutLink).Click();
+            driver.FindElement(HamburgerMenu).Click();
+            driver.FindElement(LogoutLink).Click();
         }
 
         public void ClickLogout()
         {
-            _webDriver.FindElement(HamburgerMenu).Click();
-            _webDriver.FindElement(LogoutLink).Click();
+            driver.FindElement(HamburgerMenu).Click();
+            driver.FindElement(LogoutLink).Click();
         }
 
         public void GoTo()
         {
-            _webDriver.Navigate().GoToUrl(LoginUrl);
+            driver.Navigate().GoToUrl(LoginUrl);
 
             //Home Page and Login Page share the same URL.
             //Make sure the user is logged in.
@@ -63,15 +63,15 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         public void EnsureTheUserIsLoggedIn()
         {
             //Open the home page in the browser if not opened yet
-            if (_webDriver.Url != LoginUrl)
+            if (driver.Url != LoginUrl)
             {
-                _webDriver.Url = LoginUrl;
+                driver.Url = LoginUrl;
             }
             
-            if (!_webDriver.FindElement(HamburgerMenu).Displayed || !_webDriver.FindElement(HamburgerMenu).Enabled) //Check if hamburger menu exists
+            if (!driver.FindElement(HamburgerMenu).Displayed || !driver.FindElement(HamburgerMenu).Enabled) //Check if hamburger menu exists
             //If not login as admin
             {
-                LoginPageObject loginPageObject = new LoginPageObject(_webDriver);
+                LoginPageObject loginPageObject = new LoginPageObject(driver);
                 loginPageObject.LoginAsAdmin();
             }
         }
@@ -80,7 +80,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         {
             By tab;
             By link;
-            CommonElements ce = new CommonElements(_webDriver);
+            CommonElements ce = new CommonElements(driver);
             ce.WaitForStatusToDisappear();
 
             switch (tabName)
@@ -102,12 +102,12 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
             //Hover over the Tab
             wait.Until(driver => CommonElements.Appears(driver, tab));
-            Actions action = new Actions(_webDriver);
-            action.MoveToElement(_webDriver.FindElement(tab)).Perform();
+            Actions action = new Actions(driver);
+            action.MoveToElement(driver.FindElement(tab)).Perform();
 
             //Click the link
             wait.Until(driver => CommonElements.Appears(driver, link));
-            _webDriver.FindElement(link).Click();
+            driver.FindElement(link).Click();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     internal class ReportsPageObject
     {
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
@@ -23,9 +23,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public ReportsPageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-            ce = new CommonElements(_webDriver);
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            ce = new CommonElements(driver);
         }
         //Finding elements by ID and Css
         private By FilterTextInput => By.Name("filter_text");
@@ -34,17 +34,17 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         internal void GoToReport(string reportName)
         {
             wait.Until(driver => CommonElements.Appears(driver, FilterTextInput));
-            _webDriver.FindElement(FilterTextInput).Clear();
+            driver.FindElement(FilterTextInput).Clear();
 
-            _webDriver.FindElement(FilterTextInput).SendKeys(reportName);
+            driver.FindElement(FilterTextInput).SendKeys(reportName);
 
             ce.WaitForStatusToDisappear();
             
-            _webDriver.FindElement(FilterTextInput).SendKeys(Keys.Enter);
+            driver.FindElement(FilterTextInput).SendKeys(Keys.Enter);
             ce.WaitForStatusToDisappear();
  
             wait.Until(driver => CommonElements.Appears(driver, FirstResultLink));
-            _webDriver.FindElement(FirstResultLink).Click();
+            driver.FindElement(FirstResultLink).Click();
         }
     }
 }

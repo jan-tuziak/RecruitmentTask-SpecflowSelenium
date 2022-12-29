@@ -15,7 +15,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private const string LoginUrl = "https://demo.1crmcloud.com/index.php?module=Contacts&action=EditView&record=&return_module=Contacts&return_action=DetailView";
 
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
@@ -24,8 +24,8 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public ContactsCreateRecordPageObject(IWebDriver webDriver) 
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
         //Finding elements by ID and Css
@@ -43,44 +43,44 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         {
             //Clear text box
             wait.Until(driver => CommonElements.Appears(driver, FirstNameInput));
-            _webDriver.FindElement(FirstNameInput).Clear();
+            driver.FindElement(FirstNameInput).Clear();
             //Enter text
-            _webDriver.FindElement(FirstNameInput).SendKeys(firstName);
+            driver.FindElement(FirstNameInput).SendKeys(firstName);
         }
 
         private void EnterLastName(string lastName)
         {
             //Clear text box
             wait.Until(driver => CommonElements.Appears(driver, LastNameInput));
-            _webDriver.FindElement(LastNameInput).Clear();
+            driver.FindElement(LastNameInput).Clear();
             //Enter text
-            _webDriver.FindElement(LastNameInput).SendKeys(lastName);
+            driver.FindElement(LastNameInput).SendKeys(lastName);
         }
 
         private void ChooseBusinessRole(string businessRole)
         {
             wait.Until(driver => CommonElements.Appears(driver, BusinessRoleInput));
-            _webDriver.FindElement(BusinessRoleInput).Click();
+            driver.FindElement(BusinessRoleInput).Click();
 
             wait.Until(driver => CommonElements.Appears(driver, BusinessRoleAdmin));
-            _webDriver.FindElement(BusinessRoleAdmin).Click();
+            driver.FindElement(BusinessRoleAdmin).Click();
         }
 
         internal void CreateNewContact(string firstName, string lastName, string role, string category1, string category2)
         {
-            CommonElements ce = new CommonElements(_webDriver);
+            CommonElements ce = new CommonElements(driver);
             ce.WaitForStatusToDisappear();
             EnterFirstName(firstName);
             EnterLastName(lastName);
             ChooseBusinessRole(role);
             AddCategory(category1);
             AddCategory(category2);
-            _webDriver.FindElement(SaveContactButton).Click();
+            driver.FindElement(SaveContactButton).Click();
             wait.Until(driver => CommonElements.Appears(driver, ContactDuplicateMessage));
             try
             {
-                if (_webDriver.FindElement(ContactDuplicateMessage).Text.Contains("This contact may be a duplicate of an existing contact. You may either click on Save to continue creating this new contact with the previously entered data or you may click Cancel."))
-                    _webDriver.FindElement(ContactDuplicateSaveButton).Click();
+                if (driver.FindElement(ContactDuplicateMessage).Text.Contains("This contact may be a duplicate of an existing contact. You may either click on Save to continue creating this new contact with the previously entered data or you may click Cancel."))
+                    driver.FindElement(ContactDuplicateSaveButton).Click();
             }
             catch { }
 
@@ -88,10 +88,10 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         private void AddCategory(string category)
         {
-            _webDriver.FindElement(CategoryInput).Click();
-            _webDriver.FindElement(CategorySearchList).Click();
-            _webDriver.FindElement(CategorySearchList).SendKeys(category);
-            _webDriver.FindElement(CategorySearchList).SendKeys(Keys.Enter);
+            driver.FindElement(CategoryInput).Click();
+            driver.FindElement(CategorySearchList).Click();
+            driver.FindElement(CategorySearchList).SendKeys(category);
+            driver.FindElement(CategorySearchList).SendKeys(Keys.Enter);
         }
     }
 }

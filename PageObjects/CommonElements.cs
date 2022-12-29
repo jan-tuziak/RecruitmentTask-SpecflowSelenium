@@ -15,14 +15,14 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     public class CommonElements
     {
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
         private readonly WebDriverWait wait;
         private readonly int defaultTimeout = 15;
 
         public CommonElements(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(defaultTimeout));
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(defaultTimeout));
         }
 
         private By StatusText => By.Id("ajaxStatusDiv");

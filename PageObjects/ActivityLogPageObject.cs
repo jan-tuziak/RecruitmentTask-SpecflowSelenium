@@ -13,7 +13,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     internal class ActivityLogPageObject
     {
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 5;
@@ -24,9 +24,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public ActivityLogPageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-            ce = new CommonElements(_webDriver);
+            driver = webDriver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            ce = new CommonElements(driver);
         }
 
         //Finding elements by ID
@@ -41,7 +41,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         {
             ce.WaitForStatusToDisappear();
             //Get all checkboxes from the table and remove the first one (the one in the header)
-            var checks = _webDriver.FindElements(checkboxes).ToList().Skip(1).ToList();
+            var checks = driver.FindElements(checkboxes).ToList().Skip(1).ToList();
             for (int i = 0; i < numberOfItemsToSelect; i++)
             {
                 checks[i].Click();
@@ -51,22 +51,22 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         internal void DeleteSelectedItems()
         {
-            this.numberOfItemsBeforeDeletion = Int32.Parse(_webDriver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
+            this.numberOfItemsBeforeDeletion = Int32.Parse(driver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
 
-            _webDriver.FindElement(ActionsButton).Click();
+            driver.FindElement(ActionsButton).Click();
             
             wait.Until(driver => CommonElements.Appears(driver, ActionDeleteButton));
-            _webDriver.FindElement(ActionDeleteButton).Click();
+            driver.FindElement(ActionDeleteButton).Click();
 
             wait.Until(ExpectedConditions.AlertIsPresent());
-            _webDriver.SwitchTo().Alert().Accept();
+            driver.SwitchTo().Alert().Accept();
             
             ce.WaitForStatusToDisappear();
         }
 
         internal void CheckIfItemsWereDeleted()
         {
-            int numberOfItemsAfterDeletion = Int32.Parse(_webDriver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
+            int numberOfItemsAfterDeletion = Int32.Parse(driver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
 
             numberOfItemsAfterDeletion.Should().Be(numberOfItemsBeforeDeletion - numberOfSelectedItems);
         }

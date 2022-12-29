@@ -14,14 +14,14 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         private const string url = "https://demo.1crmcloud.com/index.php?module=Contacts&action=index";
 
         //The Selenium web driver to automate the browser
-        private readonly IWebDriver _webDriver;
+        private readonly IWebDriver driver;
 
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 5;
 
         public ContactsPageObject(IWebDriver webDriver)
         {
-            _webDriver = webDriver;
+            driver = webDriver;
         }
 
         //Finding elements by ID
@@ -29,7 +29,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         public void CreateContact()
         {
-            _webDriver.FindElement(CreateContactButton).Click();
+            driver.FindElement(CreateContactButton).Click();
         }
     }
 }
