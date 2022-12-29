@@ -17,7 +17,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
 
-        CommonElements commonElements;
+        CommonElements ce;
 
         WebDriverWait wait;
 
@@ -25,37 +25,26 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         {
             _webDriver = webDriver;
             wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-            commonElements = new CommonElements(_webDriver);
+            ce = new CommonElements(_webDriver);
         }
         //Finding elements by ID and Css
-        private IWebElement FilterTextInput => _webDriver.FindElement(By.Name("filter_text"));
-        //private IWebElement FilterTextProjectProfitabilityOption => _webDriver.FindElement(By.CssSelector("div.option-cell.input-label"));
-        private By FirstResultLinkLocator => By.CssSelector("table.listView>tbody>tr:first-child>td:nth-child(3)>span>a");
-        private IWebElement FirstResultLink => _webDriver.FindElement(FirstResultLinkLocator);
+        private By FilterTextInput => By.Name("filter_text");
+        private By FirstResultLink => By.CssSelector("table.listView>tbody>tr:first-child>td:nth-child(3)>span>a");
 
         internal void GoToReport(string reportName)
         {
-            try
-            {
-                FilterTextInput.Clear();
-            }
-            catch (StaleElementReferenceException ex)
-            {
-                FilterTextInput.Clear();
-            }
-            FilterTextInput.SendKeys(reportName);
-            Thread.Sleep(250);
-            FilterTextInput.SendKeys(Keys.Enter);
-            Thread.Sleep(1000);
-            try
-            {
-                FirstResultLink.Click();
-            }
-            catch(StaleElementReferenceException ex) 
-            {
-                FirstResultLink.Click();
-            } 
+            wait.Until(driver => CommonElements.Appears(driver, FilterTextInput));
+            _webDriver.FindElement(FilterTextInput).Clear();
 
+            _webDriver.FindElement(FilterTextInput).SendKeys(reportName);
+
+            ce.WaitForStatusToDisappear();
+            
+            _webDriver.FindElement(FilterTextInput).SendKeys(Keys.Enter);
+            ce.WaitForStatusToDisappear();
+ 
+            wait.Until(driver => CommonElements.Appears(driver, FirstResultLink));
+            _webDriver.FindElement(FirstResultLink).Click();
         }
     }
 }

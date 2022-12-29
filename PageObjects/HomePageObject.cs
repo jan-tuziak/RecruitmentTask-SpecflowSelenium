@@ -30,27 +30,25 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         }
 
         //Finding elements by ID
-        public IWebElement HamburgerMenu => _webDriver.FindElement(By.CssSelector("label.meta-options-dropdown-button"));
-        private IWebElement LogoutLink => _webDriver.FindElement(By.CssSelector("div.meta-options-dropdown>a:first-child"));
-        private IWebElement TabSalesAndMarketing => _webDriver.FindElement(By.Id("grouptab-1"));
-        private IWebElement LinkContacts => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(4)>div:nth-child(3)>a.menu-tab-sub-list"));
-        private IWebElement TabReportsAndSettings => _webDriver.FindElement(By.Id("grouptab-5"));
-        private IWebElement LinkReports => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:first-child>a.menu-tab-sub-list"));
-        private IWebElement LinkActivityLog => _webDriver.FindElement(By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:nth-child(3)>a.menu-tab-sub-list"));
-
-
+        public By HamburgerMenu => By.CssSelector("label.meta-options-dropdown-button");
+        private By LogoutLink => By.CssSelector("div.meta-options-dropdown>a:first-child");
+        private By TabSalesAndMarketing => By.Id("grouptab-1");
+        private By LinkContacts => By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(4)>div:nth-child(3)>a.menu-tab-sub-list");
+        private By TabReportsAndSettings => By.Id("grouptab-5");
+        private By LinkReports => By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:first-child>a.menu-tab-sub-list");
+        private By LinkActivityLog => By.CssSelector("div.tab-nav-sub-wrap>div:nth-child(12)>div:nth-child(3)>a.menu-tab-sub-list");
 
         public void Logout()
         {
             this.GoTo();
-            this.HamburgerMenu.Click();
-            this.LogoutLink.Click();
+            _webDriver.FindElement(HamburgerMenu).Click();
+            _webDriver.FindElement(LogoutLink).Click();
         }
 
         public void ClickLogout()
         {
-            HamburgerMenu.Click();
-            LogoutLink.Click();
+            _webDriver.FindElement(HamburgerMenu).Click();
+            _webDriver.FindElement(LogoutLink).Click();
         }
 
         public void GoTo()
@@ -70,7 +68,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
                 _webDriver.Url = LoginUrl;
             }
             
-            if (!this.HamburgerMenu.Displayed || !this.HamburgerMenu.Enabled) //Check if hamburger menu exists
+            if (!_webDriver.FindElement(HamburgerMenu).Displayed || !_webDriver.FindElement(HamburgerMenu).Enabled) //Check if hamburger menu exists
             //If not login as admin
             {
                 LoginPageObject loginPageObject = new LoginPageObject(_webDriver);
@@ -80,8 +78,10 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         internal void NavigateTo(string tabName)
         {
-            IWebElement tab;
-            IWebElement link;
+            By tab;
+            By link;
+            CommonElements ce = new CommonElements(_webDriver);
+            ce.WaitForStatusToDisappear();
 
             switch (tabName)
             {
@@ -101,19 +101,13 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
             }
 
             //Hover over the Tab
+            wait.Until(driver => CommonElements.Appears(driver, tab));
             Actions action = new Actions(_webDriver);
-            action.MoveToElement(tab).Perform();
+            action.MoveToElement(_webDriver.FindElement(tab)).Perform();
 
             //Click the link
-            link.Click();
-            Thread.Sleep(1000);
-
-            ////wait for the page to load
-            //try
-            //{
-            //    wait.Until(ExpectedConditions.StalenessOf(link));
-            //}
-            //catch (NoSuchElementException) { }
+            wait.Until(driver => CommonElements.Appears(driver, link));
+            _webDriver.FindElement(link).Click();
         }
     }
 }

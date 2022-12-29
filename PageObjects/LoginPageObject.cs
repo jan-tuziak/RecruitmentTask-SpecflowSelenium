@@ -26,9 +26,9 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         }
 
         //Finding elements by ID
-        private IWebElement UserName => _webDriver.FindElement(By.Id("login_user"));
-        private IWebElement Password => _webDriver.FindElement(By.Id("login_pass"));
-        private IWebElement Login => _webDriver.FindElement(By.Id("login_button"));
+        private By UserName => By.Id("login_user");
+        private By Password => By.Id("login_pass");
+        private By Login => By.Id("login_button");
         private SelectElement Theme => new SelectElement(_webDriver.FindElement(By.Id("login_theme")));
 
         public void LoginAsAdmin()
@@ -53,17 +53,17 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         public void EnterUserName(string userName)
         {
             //Clear text box
-            UserName.Clear();
+            _webDriver.FindElement(UserName).Clear();
             //Enter text
-            UserName.SendKeys(userName);
+            _webDriver.FindElement(UserName).SendKeys(userName);
         }
 
         public void EnterPassword(string password)
         {
             //Clear text box
-            Password.Clear();
+            _webDriver.FindElement(Password).Clear();
             //Enter text
-            Password.SendKeys(password);
+            _webDriver.FindElement(Password).SendKeys(password);
         }
 
         public void SelectTheme()
@@ -74,7 +74,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         public void ClickLogin()
         {
             //Click the add button
-            Login.Click();
+            _webDriver.FindElement(Login).Click();
         }
 
         public void EnsureTheUserIsLoggedOut()
@@ -88,7 +88,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
             try  
             //Check if login field exists
             {
-                var temp = this.Login.Enabled || this.Login.Displayed;
+                var temp = _webDriver.FindElement(Login).Enabled || _webDriver.FindElement(Login).Displayed;
             }
             catch(Exception ex)
             //If not logout

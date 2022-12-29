@@ -16,24 +16,25 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
 
-        WebDriverWait webDriverWait;
+        WebDriverWait wait;
 
         public ContactsDetailPageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
-            webDriverWait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
         //Finding elements by ID and Css
-        private IWebElement FullNameHeader => _webDriver.FindElement(By.CssSelector("div#_form_header>h3"));
-        private IWebElement BusinessRoleHeader => _webDriver.FindElement(By.CssSelector("div.cell-business_role>div.form-entry>div.form-value"));
-        private IWebElement CategoriesList => _webDriver.FindElement(By.CssSelector("div.summary-right>div.summary-meta>ul>li:first-child"));
+        private By FullNameHeader => By.CssSelector("div#_form_header>h3");
+        private By BusinessRoleHeader => By.CssSelector("div.cell-business_role>div.form-entry>div.form-value");
+        private By CategoriesList => By.CssSelector("div.summary-right>div.summary-meta>ul>li:first-child");
 
         internal void CheckNewContact(string firstName, string lastName, string role, string category1, string category2)
         {
-            string actualFullName = FullNameHeader.Text;
-            string actualBusinessRole = BusinessRoleHeader.Text;
-            string actualCategories = CategoriesList.Text;
+            wait.Until(driver => CommonElements.Appears(driver, FullNameHeader));
+            string actualFullName = _webDriver.FindElement(FullNameHeader).Text;
+            string actualBusinessRole = _webDriver.FindElement(BusinessRoleHeader).Text;
+            string actualCategories = _webDriver.FindElement(CategoriesList).Text;
 
             actualFullName.Should().Contain($"{firstName} {lastName}");
             actualBusinessRole.Should().Be(role);

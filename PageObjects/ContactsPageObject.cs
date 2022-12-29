@@ -11,7 +11,7 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
     internal class ContactsPageObject
     {
         //The URL of the home page to be opened in the browser
-        private const string LoginUrl = "https://demo.1crmcloud.com/index.php?module=Contacts&action=index";
+        private const string url = "https://demo.1crmcloud.com/index.php?module=Contacts&action=index";
 
         //The Selenium web driver to automate the browser
         private readonly IWebDriver _webDriver;
@@ -25,11 +25,11 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         }
 
         //Finding elements by ID
-        private IWebElement CreateContactButton => _webDriver.FindElement(By.CssSelector("#left-sidebar>div:nth-child(2)"));
+        private By CreateContactButton => By.CssSelector("#left-sidebar>div:nth-child(2)");
 
         public void CreateContact()
         {
-            CreateContactButton.Click();
+            _webDriver.FindElement(CreateContactButton).Click();
         }
     }
 }

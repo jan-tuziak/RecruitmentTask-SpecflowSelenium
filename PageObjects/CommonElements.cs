@@ -17,21 +17,27 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         //The Selenium web driver to automate the browser
         private readonly IWebDriver _webDriver;
         private readonly WebDriverWait wait;
+        private readonly int defaultTimeout = 15;
 
         public CommonElements(IWebDriver webDriver)
         {
             _webDriver = webDriver;
-            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(15));
+            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(defaultTimeout));
         }
 
-        private By StatusTextLocator => By.Id("AjaxStatusDiv");
-        private IWebElement StatusText => _webDriver.FindElement(StatusTextLocator);
+        private By StatusText => By.Id("ajaxStatusDiv");
 
         public void WaitForStatusToDisappear()
         {
             //Wait until Status Text is invisible
-            Thread.Sleep(1);
-            wait.Until(ExpectedConditions.InvisibilityOfElementLocated(StatusTextLocator));
+            wait.Until(driver => Exists(driver, StatusText));
+            wait.Until(driver => !driver.FindElement(StatusText).Displayed);
         }
+
+        public static bool Exists(IWebDriver driver, By locator) => 
+            driver.FindElements(locator).Count > 0;
+
+        public static bool Appears(IWebDriver driver, By locator) => 
+            Exists(driver, locator) && driver.FindElement(locator).Displayed;
     }
 }

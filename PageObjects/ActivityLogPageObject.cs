@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,46 +20,53 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
 
         WebDriverWait wait;
 
+        CommonElements ce;
+
         public ActivityLogPageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
             wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            ce = new CommonElements(_webDriver);
         }
 
         //Finding elements by ID
-        //Get all checkboxes from the table and remove the first one (the one in the header)
-        private List<IWebElement> checkboxes => _webDriver.FindElements(By.CssSelector("div.input-check>input.checkbox")).ToList().Skip(1).ToList();
-        private IWebElement numberOfAllItems => _webDriver.FindElement(By.CssSelector("div#content-main>div>div>div:nth-child(2)>div>div:nth-child(2)>span:nth-child(2)"));
-        private IWebElement ActionsButton => _webDriver.FindElement(By.CssSelector("div#content-main>div>div>div:nth-child(2)>div>div:first-child>div:first-child>button:first-child"));
-        private IWebElement ActionDeleteButton => _webDriver.FindElement(By.CssSelector("div[id$=ActionButtonHead-popup]>div:first-child>div:first-child>div:nth-child(2)"));
+        private By checkboxes => By.CssSelector("div.input-check>input.checkbox");
+        private By numberOfAllItems => By.CssSelector("div#content-main>div>div>div:nth-child(2)>div>div:nth-child(2)>span:nth-child(2)");
+        private By ActionsButton => By.CssSelector("div#content-main>div>div>div:nth-child(2)>div>div:first-child>div:first-child>button:first-child");
+        private By ActionDeleteButton => By.CssSelector("div[id$=ActionButtonHead-popup]>div:first-child>div:first-child>div:nth-child(2)");
         private int numberOfSelectedItems;
         private int numberOfItemsBeforeDeletion;
 
         internal void SelectFirstItemsInTheTable(int numberOfItemsToSelect)
         {
+            ce.WaitForStatusToDisappear();
+            //Get all checkboxes from the table and remove the first one (the one in the header)
+            var checks = _webDriver.FindElements(checkboxes).ToList().Skip(1).ToList();
             for (int i = 0; i < numberOfItemsToSelect; i++)
             {
-                Thread.Sleep(250);
-                checkboxes[i].Click();
+                checks[i].Click();
             }
             numberOfSelectedItems = numberOfItemsToSelect;
         }
 
         internal void DeleteSelectedItems()
         {
-            this.numberOfItemsBeforeDeletion = Int32.Parse(numberOfAllItems.Text, System.Globalization.NumberStyles.AllowThousands);
+            this.numberOfItemsBeforeDeletion = Int32.Parse(_webDriver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
+
+            _webDriver.FindElement(ActionsButton).Click();
             
-            ActionsButton.Click();
-            Thread.Sleep(500);
-            ActionDeleteButton.Click();
-            Thread.Sleep(1000);
+            wait.Until(driver => CommonElements.Appears(driver, ActionDeleteButton));
+            _webDriver.FindElement(ActionDeleteButton).Click();
+
+            wait.Until(ExpectedConditions.AlertIsPresent());
             _webDriver.SwitchTo().Alert().Accept();
-            Thread.Sleep(1500);
+            
+            ce.WaitForStatusToDisappear();
         }
 
         internal void CheckIfItemsWereDeleted()
         {
-            int numberOfItemsAfterDeletion = Int32.Parse(numberOfAllItems.Text, System.Globalization.NumberStyles.AllowThousands);
+            int numberOfItemsAfterDeletion = Int32.Parse(_webDriver.FindElement(numberOfAllItems).Text, System.Globalization.NumberStyles.AllowThousands);
 
             numberOfItemsAfterDeletion.Should().Be(numberOfItemsBeforeDeletion - numberOfSelectedItems);
         }

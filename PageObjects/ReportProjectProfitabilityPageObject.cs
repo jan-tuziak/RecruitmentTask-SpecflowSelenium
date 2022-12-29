@@ -16,28 +16,32 @@ namespace RecruitmentTaskSpecflowSelenium.PageObjects
         //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 10;
 
-        WebDriverWait webDriverWait;
+        WebDriverWait wait;
+        CommonElements ce;
 
         public ReportProjectProfitabilityPageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
-            webDriverWait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            ce = new CommonElements(_webDriver);
         }
         //Finding elements by ID and Css
-        private IWebElement RunReportButton => _webDriver.FindElement(By.Name("FilterForm_applyButton"));
-        private IWebElement ReportName => _webDriver.FindElement(By.CssSelector("h4.form-title"));
+        private By RunReportButton => By.Name("FilterForm_applyButton");
+        private By ReportName => By.CssSelector("h4.form-title");
         private By SampleDataPointLocator => By.CssSelector("tr[data-id]");
 
         internal void CheckIfCorrectPageIsShown()
         {
-            ReportName.Text.Trim().Should().Be("Project Profitability");
+            ce.WaitForStatusToDisappear();
+            wait.Until(driver => CommonElements.Appears(driver, ReportName));
+            _webDriver.FindElement(ReportName).Text.Trim().Should().Be("Project Profitability");
         }
 
         internal void RunReport()
         {
-            Thread.Sleep(1000);
-            RunReportButton.Click();
-            Thread.Sleep(250);
+            wait.Until(driver => CommonElements.Appears(driver, RunReportButton));
+            _webDriver.FindElement(RunReportButton).Click();
+            ce.WaitForStatusToDisappear();
         }
 
         internal void CheckIfResultsAreShown()
